@@ -1,8 +1,12 @@
 <template>
 <div>
-<Header></Header>
+<Header>
+  
+</Header>
 <router-view></router-view>
-<Footer v-show="$route.meta.isActive"></Footer>
+<Footer v-show="$route.meta.isActive">
+
+</Footer>
 </div>
   
 </template>
