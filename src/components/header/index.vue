@@ -48,7 +48,7 @@
         toSearch(){
             this.$router.push({
                 path:'/search',
-            })
+            }).catch(()=>{})
         }
     }
   }
