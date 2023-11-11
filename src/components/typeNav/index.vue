@@ -1693,8 +1693,14 @@
 </template>
 
 <script>
+import {reqCategory} from '@/api'
   export default {
-    name:'TypeNav'
+    name:'TypeNav',
+    mounted(){
+        reqCategory().then((res)=>{
+               return res.data
+        })
+    }
   }
 </script>
 
