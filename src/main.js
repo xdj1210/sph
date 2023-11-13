@@ -3,6 +3,7 @@ import App from './App.vue'
 import Header from './components/header'
 import Footer from './components/footer'
 import TypeNav from './components/typeNav'
+import store from './store'
 import '@/assets/reset.css'
 import router from '@/router'
 Vue.config.productionTip = false
@@ -11,5 +12,6 @@ Vue.component(Footer.name,Footer)
 Vue.component(TypeNav.name,TypeNav)
 new Vue({
   render: h => h(App),
-  router
+  router,
+  store
 }).$mount('#app')
