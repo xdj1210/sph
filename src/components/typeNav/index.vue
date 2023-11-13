@@ -5,7 +5,7 @@
       <div @mouseleave="leaveHandler">
         <h2 class="all">全部商品分类</h2>
         <div class="sort">
-          <div class="all-sort-list2">
+          <div class="all-sort-list2" @click="goSearch">
             <div
               class="item"
               v-for="(c1, index) in categoryArr"
@@ -15,7 +15,11 @@
                 :class="{ active: activeIndex == index }"
                 @mouseenter="enterHandler(index)"
               >
-                <a @click="goSearch(c1)">{{ c1.categoryName }}</a>
+                <a
+                  :data-categoryName="c1.categoryName"
+                  :data-category1Id="c1.categoryId"
+                  >{{ c1.categoryName }}</a
+                >
               </h3>
               <div class="item-list clearfix" v-show="activeIndex == index">
                 <div class="subitem">
@@ -25,11 +29,19 @@
                     :key="c2.categoryId"
                   >
                     <dt>
-                      <a @click="goSearch1(c2)">{{ c2.categoryName }}</a>
+                      <a
+                        :data-categoryName="c2.categoryName"
+                        :data-category2Id="c2.categoryId"
+                        >{{ c2.categoryName }}</a
+                      >
                     </dt>
                     <dd>
                       <em v-for="c3 in c2.categoryChild" :key="c3.categoryId">
-                        <a @click="goSearch2(c3)">{{ c3.categoryName }}</a>
+                        <a
+                          :data-categoryName="c3.categoryName"
+                          :data-category3Id="c3.categoryId"
+                          >{{ c3.categoryName }}</a
+                        >
                       </em>
                     </dd>
                   </dl>
@@ -77,27 +89,25 @@ export default {
       this.activeIndex = -1;
     },
     // 一级
-    goSearch(c1){
-        this.$router.push({
-            name:'search',
-            query:{categoryName:c1.categoryName,category1Id:c1.categoryId}
-        })
+    goSearch(event) {
+      const { categoryname, category1id, category2id, category3id } =
+        event.target.dataset;
+      if (categoryname) {
+        const locations = {
+          name: "search",
+          query: { categoryName: categoryname },
+        };
+        if (category1id) {
+            locations.query.category1Id=category1id
+        } else if (category2id) {
+            locations.query.category2Id=category2id
+        } else {
+            locations.query.category3Id=category3id
+
+        }
+        this.$router.push(locations)
+      }
     },
-    // 二级
-    goSearch1(c2){
-        this.$router.push({
-            name:'search',
-            query:{categoryName:c2.categoryName,category2Id:c2.categoryId}
-        })
-    },
-    // 三级
-    goSearch2(c3){
-        this.$router.push({
-            name:'search',
-            query:{categoryName:c3.categoryName,category3Id:c3.categoryId}
-        })
-        console.log('diaoyong');
-    }
   },
   computed: {
     ...mapState({
@@ -108,115 +118,113 @@ export default {
 </script>
 
 <style scoped lang='less'>
-  .type-nav {
-    border-bottom: 2px solid #e1251b;
+.type-nav {
+  border-bottom: 2px solid #e1251b;
 
-    .container {
-      width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      position: relative;
+  .container {
+    width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    position: relative;
 
-      .all {
-        width: 210px;
+    .all {
+      width: 210px;
+      height: 45px;
+      background-color: #e1251b;
+      line-height: 45px;
+      text-align: center;
+      color: #fff;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .nav {
+      a {
         height: 45px;
-        background-color: #e1251b;
+        margin: 0 22px;
         line-height: 45px;
-        text-align: center;
-        color: #fff;
-        font-size: 14px;
-        font-weight: bold;
+        font-size: 16px;
+        color: #333;
       }
+    }
 
-      .nav {
-        a {
-          height: 45px;
-          margin: 0 22px;
-          line-height: 45px;
-          font-size: 16px;
-          color: #333;
-        }
-      }
+    .sort {
+      position: absolute;
+      left: 0;
+      top: 45px;
+      width: 210px;
+      height: 461px;
+      position: absolute;
+      background: #fafafa;
+      z-index: 999;
 
-      .sort {
-        position: absolute;
-        left: 0;
-        top: 45px;
-        width: 210px;
-        height: 461px;
-        position: absolute;
-        background: #fafafa;
-        z-index: 999;
+      .all-sort-list2 {
+        .item {
+          h3 {
+            line-height: 30px;
+            font-size: 14px;
+            font-weight: 400;
+            overflow: hidden;
+            padding: 0 20px;
+            margin: 0;
 
-        .all-sort-list2 {
-          .item {
-            h3 {
-              line-height: 30px;
-              font-size: 14px;
-              font-weight: 400;
-              overflow: hidden;
-              padding: 0 20px;
-              margin: 0;
-
-              a {
-                color: #333;
-              }
+            a {
+              color: #333;
             }
+          }
 
-            .item-list {
-              position: absolute;
-              width: 734px;
-              min-height: 460px;
-              background: #f7f7f7;
-              left: 210px;
-              border: 1px solid #ddd;
-              top: 0;
-              z-index: 9999 !important;
+          .item-list {
+            position: absolute;
+            width: 734px;
+            min-height: 460px;
+            background: #f7f7f7;
+            left: 210px;
+            border: 1px solid #ddd;
+            top: 0;
+            z-index: 9999 !important;
 
-              .subitem {
-                float: left;
-                width: 650px;
-                padding: 0 4px 0 8px;
+            .subitem {
+              float: left;
+              width: 650px;
+              padding: 0 4px 0 8px;
 
-                dl {
-                  border-top: 1px solid #eee;
-                  padding: 6px 0;
+              dl {
+                border-top: 1px solid #eee;
+                padding: 6px 0;
+                overflow: hidden;
+                zoom: 1;
+
+                &.fore {
+                  border-top: 0;
+                }
+
+                dt {
+                  float: left;
+                  width: 54px;
+                  line-height: 22px;
+                  text-align: right;
+                  padding: 3px 6px 0 0;
+                  font-weight: 700;
+                }
+
+                dd {
+                  float: left;
+                  width: 415px;
+                  padding: 3px 0 0;
                   overflow: hidden;
-                  zoom: 1;
 
-                  &.fore {
-                    border-top: 0;
-                  }
-
-                  dt {
+                  em {
                     float: left;
-                    width: 54px;
-                    line-height: 22px;
-                    text-align: right;
-                    padding: 3px 6px 0 0;
-                    font-weight: 700;
-                  }
-
-                  dd {
-                    float: left;
-                    width: 415px;
-                    padding: 3px 0 0;
-                    overflow: hidden;
-
-                    em {
-                      float: left;
-                      height: 14px;
-                      line-height: 14px;
-                      padding: 0 8px;
-                      margin-top: 5px;
-                      border-left: 1px solid #ccc;
-                    }
+                    height: 14px;
+                    line-height: 14px;
+                    padding: 0 8px;
+                    margin-top: 5px;
+                    border-left: 1px solid #ccc;
                   }
                 }
               }
             }
-
-
+          }
 
           .active {
             background: rgb(239, 97, 65);
