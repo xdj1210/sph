@@ -15,7 +15,7 @@
                 :class="{ active: activeIndex == index }"
                 @mouseenter="enterHandler(index)"
               >
-                <a href="">{{ c1.categoryName }}</a>
+                <a @click="goSearch(c1)">{{ c1.categoryName }}</a>
               </h3>
               <div class="item-list clearfix" v-show="activeIndex == index">
                 <div class="subitem">
@@ -25,11 +25,11 @@
                     :key="c2.categoryId"
                   >
                     <dt>
-                      <a href="">{{ c2.categoryName }}</a>
+                      <a @click="goSearch1(c2)">{{ c2.categoryName }}</a>
                     </dt>
                     <dd>
                       <em v-for="c3 in c2.categoryChild" :key="c3.categoryId">
-                        <a>{{ c3.categoryName }}</a>
+                        <a @click="goSearch2(c3)">{{ c3.categoryName }}</a>
                       </em>
                     </dd>
                   </dl>
@@ -76,6 +76,28 @@ export default {
     leaveHandler() {
       this.activeIndex = -1;
     },
+    // 一级
+    goSearch(c1){
+        this.$router.push({
+            name:'search',
+            query:{categoryName:c1.categoryName,category1Id:c1.categoryId}
+        })
+    },
+    // 二级
+    goSearch1(c2){
+        this.$router.push({
+            name:'search',
+            query:{categoryName:c2.categoryName,category2Id:c2.categoryId}
+        })
+    },
+    // 三级
+    goSearch2(c3){
+        this.$router.push({
+            name:'search',
+            query:{categoryName:c3.categoryName,category3Id:c3.categoryId}
+        })
+        console.log('diaoyong');
+    }
   },
   computed: {
     ...mapState({
