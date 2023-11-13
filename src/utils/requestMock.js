@@ -3,21 +3,21 @@ import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 NProgress.configure({ showSpinner: false })
 let request=axios.create({
-    baseURL:'/api',
+    baseURL:'/mock',
     timeout:5000
 })
 
 //请求拦截器
 request.interceptors.request.use((config)=>{
     NProgress.start();
-    // console.log(config);
+    console.log(config);
     return config;
 })
 
 //相应拦截器
 request.interceptors.response.use((res)=>{
     NProgress.done()
-    // console.log(res);
+    console.log(res);
     return res.data
 },(error)=> {
     let status=error.response.status
