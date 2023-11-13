@@ -13,10 +13,11 @@ let mutations={
     GETCATEGORY(state,category){
         state.category=category
     }
-}
+};
+
 let state = {
     category:[]
-}
+};
 
 export default {
     state,
